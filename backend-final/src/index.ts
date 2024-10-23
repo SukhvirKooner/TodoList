@@ -1,13 +1,16 @@
 import express, { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client'; 
 import bodyParser from 'body-parser';
+const cors = require("cors");
 
 const app = express();
 const port = 4000; 
 const jwt = require('jsonwebtoken');
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 const prisma = new PrismaClient;
+
 
 async function createUser(firstName:string,lastName:string,email:string,password:string) {
     const res = await prisma.user.create({
@@ -37,6 +40,9 @@ app.get('/', ( req: Request,res: Response) => {
 });
 
 app.post("/signup", async (req: Request, res: Response) => {
+    
+    
+    console.log("signup activated");
     let check = await getUser(req.body.email);
     if(check){
         res.status(400).json({success:false,errors:"user already exists"});
@@ -53,7 +59,9 @@ app.post("/signup", async (req: Request, res: Response) => {
 
 });
 
-app.get("/login",async(req:Request,res:Response)=>{
+app.post("/login",async(req:Request,res:Response)=>{        
+    console.log("login backend");
+    
     const user = await getUser(req.body.email);
     if(user){
         const comparePass = req.body.password == user.password;
