@@ -8,6 +8,44 @@ div {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     font-family: 'Arial', sans-serif;
 }
+.todo-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.todo-item input[type="checkbox"] {
+  margin-right: 15px;
+  transform: scale(1.2); /* To make the checkbox a bit larger */
+}
+
+.todo-item h2 {
+  font-size: 1.2em;
+  margin: 0;
+  flex: 1; /* Allows the title to take up remaining space */
+  color: #333;
+}
+
+.todo-item p {
+  font-size: 0.9em;
+  color: #777;
+  margin: 0;
+}
+
+.todo-item:hover {
+  background-color: #f1f1f1;
+  border-color: #ccc;
+}
+
+.todo-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 
 /* Header Styling */
 h1 {
