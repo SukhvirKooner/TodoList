@@ -1,10 +1,10 @@
-
+import CreateTodo from "../Components/createTodo";
+import GetTodos from "../Components/Todos";
  function todos(){
     return(
     <div>
-    <h1>
-        todos
-    </h1>
+        <GetTodos/>
+        <CreateTodo/>
     </div>
     )
 }

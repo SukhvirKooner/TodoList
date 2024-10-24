@@ -74,14 +74,14 @@ const fetchUser = async(req:Request,res:Response,next:NextFunction)=>{
 }
 app.post("/new",fetchUser,async(req:Request,res:Response)=>{
     const todo = await newTodo(req.body.title,req.body.description,res.locals.user.id);
-    // res.json(todo);
+    res.json(todo);
     console.log("new todo created",todo);
     
 })
 app.post("/gettodo",fetchUser,async(req:Request,res:Response)=>{
     const gettodo = await getTodo(res.locals.user.id);
     console.log(gettodo);
-    res.json(gettodo)
+    res.json(gettodo);
 })
 
 app.get('/', ( req: Request,res: Response) => {
@@ -111,7 +111,7 @@ app.post("/signup", async (req: Request, res: Response) => {
 app.post("/login",async(req:Request,res:Response)=>{        
     console.log("login backend");
     
-    const user = await getUser(req.body.email);
+    const user = await getUser(req.body.email);    
     if(user){
         const comparePass = req.body.password == user.password;
         if(comparePass){
