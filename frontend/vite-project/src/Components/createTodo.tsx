@@ -25,7 +25,7 @@ const createTodo= () =>{
                          await response.json();
                          setTitle("");
                          setDescription("");
-                    alert("Todo Created")
+                    // alert("Todo Created")
 
                   })
             }}>+</button>

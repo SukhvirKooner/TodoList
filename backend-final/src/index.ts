@@ -56,6 +56,19 @@ async function getTodo(userId:number) {
     return res;
     
 }
+
+async function checked(id:number,userId:number) {
+    const res = await prisma.todo.update({
+        where:{
+            id,
+            userId
+        },
+        data:{
+            done:true
+        }
+    })
+}
+
 // middleware to get userId
 const fetchUser = async(req:Request,res:Response,next:NextFunction)=>{
     const token =req.header('auth-token');
@@ -72,6 +85,12 @@ const fetchUser = async(req:Request,res:Response,next:NextFunction)=>{
         }
     }
 }
+
+app.post("/done",fetchUser,async(req:Request,res:Response)=>{
+    const marked = await checked(req.body.id,res.locals.user.id)
+    console.log("task done",marked);
+})
+
 app.post("/new",fetchUser,async(req:Request,res:Response)=>{
     const todo = await newTodo(req.body.title,req.body.description,res.locals.user.id);
     res.json(todo);
