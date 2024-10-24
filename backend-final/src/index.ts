@@ -46,6 +46,16 @@ async function newTodo(title:string,description:string,userId:number) {
     return res;
     
 }
+async function getTodo(userId:number) {
+    const res = await prisma.todo.findMany({
+        where:{
+            userId
+        }
+    })
+    console.log(res);
+    return res;
+    
+}
 // middleware to get userId
 const fetchUser = async(req:Request,res:Response,next:NextFunction)=>{
     const token =req.header('auth-token');
@@ -64,8 +74,14 @@ const fetchUser = async(req:Request,res:Response,next:NextFunction)=>{
 }
 app.post("/new",fetchUser,async(req:Request,res:Response)=>{
     const todo = await newTodo(req.body.title,req.body.description,res.locals.user.id);
+    // res.json(todo);
     console.log("new todo created",todo);
     
+})
+app.post("/gettodo",fetchUser,async(req:Request,res:Response)=>{
+    const gettodo = await getTodo(res.locals.user.id);
+    console.log(gettodo);
+    res.json(gettodo)
 })
 
 app.get('/', ( req: Request,res: Response) => {
