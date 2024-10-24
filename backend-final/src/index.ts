@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client'; 
 import bodyParser from 'body-parser';
 const cors = require("cors");
@@ -34,6 +34,39 @@ async function getUser(email:string) {
     return res;
     
 }
+async function newTodo(title:string,description:string,userId:number) {
+        const res = await prisma.todo.create({
+            data:{
+                title,
+                description,
+                userId
+            }
+        })
+    console.log(res);
+    return res;
+    
+}
+// middleware to get userId
+const fetchUser = async(req:Request,res:Response,next:NextFunction)=>{
+    const token =req.header('auth-token');
+    if(!token){
+        res.status(401).send({errors:"please authenticate"});
+
+    }else{
+        try{
+            const data = jwt.verify(token,'TodoList')
+            res.locals.user = data.user 
+             next();
+        }catch(error){
+            res.status(401).send("please authenticate using valid token")
+        }
+    }
+}
+app.post("/new",fetchUser,async(req:Request,res:Response)=>{
+    const todo = await newTodo(req.body.title,req.body.description,res.locals.user.id);
+    console.log("new todo created",todo);
+    
+})
 
 app.get('/', ( req: Request,res: Response) => {
   res.send('Hello from TypeScript Express!');
